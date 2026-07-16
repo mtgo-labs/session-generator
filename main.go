@@ -232,7 +232,7 @@ func cmdFromFile(args []string) {
 	}
 
 	path := rest[0]
-	session, sqliteFmt, err := tgconv.ReadSQLite(path)
+	session, sqliteFmt, err := ReadSQLite(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)

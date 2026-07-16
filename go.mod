@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/mtgo-labs/mtgo v0.15.2
-	github.com/mtgo-labs/session-converter v0.1.0
+	github.com/mtgo-labs/session-converter v0.4.0
 )
 
 require (

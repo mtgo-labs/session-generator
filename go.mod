@@ -24,7 +24,3 @@ require (
 	modernc.org/memory v1.11.0 // indirect
 	modernc.org/sqlite v1.53.0 // indirect
 )
-
-replace github.com/mtgo-labs/session-converter => ../session-converter
-
-replace github.com/mtgo-labs/mtgo => ../mtgo

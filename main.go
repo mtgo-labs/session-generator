@@ -27,6 +27,7 @@ Usage:
   tgconv info <session-string> [-f <format>]
   tgconv from-file <sqlite-path> [-t <format>] [flags]
   tgconv generate --api-id <id> --api-hash <hash> [--bot-token <token> | --phone <number>] [-t <format>]
+  tgconv relogin <session-string> --api-id <id> --api-hash <hash> [-t <format>] [--device <type>] [--device-id <id>]
   tgconv list
 
 Commands:
@@ -34,6 +35,7 @@ Commands:
   info        Show decoded session information
   from-file   Read a SQLite session file and export as a string
   generate    Generate a new session by authenticating with Telegram
+  relogin     Re-authenticate an existing session as a fresh login with a new device
   list        List supported formats
 
 Formats:
@@ -55,6 +57,12 @@ Flags (generate):
   --api-hash string     API Hash from my.telegram.org (required)
   --bot-token string    Bot token (for bot sessions)
   --phone string        Phone number (for user sessions, e.g. +1234567890)
+
+Flags (relogin):
+  --api-id int          API ID from my.telegram.org (required)
+  --api-hash string     API Hash from my.telegram.org (required)
+  --device string       Device type (default: android)
+  --device-id string    Unique ID for deterministic device generation
   -t string             Output format (default: telethon)`)
 }
 
@@ -100,6 +108,8 @@ func main() {
 		cmdList()
 	case "generate":
 		cmdGenerate(args)
+	case "relogin":
+		cmdRelogin(args)
 	case "-h", "--help", "help":
 		usage()
 	default:

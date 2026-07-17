@@ -3,10 +3,13 @@ module github.com/mtgo-labs/session-generator
 go 1.26.4
 
 require (
+	github.com/mtgo-labs/device-manager v0.2.0
 	github.com/mtgo-labs/mtgo v0.15.2
 	github.com/mtgo-labs/session-converter v0.5.0
 	modernc.org/sqlite v1.53.0
 )
+
+replace github.com/mtgo-labs/device-manager => ../device-manager
 
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect

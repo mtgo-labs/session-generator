@@ -9,8 +9,6 @@ require (
 	modernc.org/sqlite v1.53.0
 )
 
-replace github.com/mtgo-labs/device-manager => ../device-manager
-
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect

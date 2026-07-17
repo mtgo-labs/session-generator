@@ -10,6 +10,8 @@ github.com/klauspost/compress v1.19.0 h1:sXLILfc9jV2QYWkzFOPWStmcUVH2RHEB1JCdY2o
 github.com/klauspost/compress v1.19.0/go.mod h1:cwPg85FWrGar70rWktvGQj8/hthj3wpl0PGDogxkrSQ=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
+github.com/mtgo-labs/device-manager v0.2.0 h1:v1wxrWfjxR2WlGakK7EufE0NJnlJQgFaiOX/yqCWlcU=
+github.com/mtgo-labs/device-manager v0.2.0/go.mod h1:wwKq5sR+4A+xDMM0Eflajb24fzp4RzYPc6z9d0dD0XU=
 github.com/mtgo-labs/mtgo v0.15.2 h1:tIROFeRn+DFUNAaQ/z01FQUiuPGNzSVE0nW7D221Lqo=
 github.com/mtgo-labs/mtgo v0.15.2/go.mod h1:YcGcTRzDQVeFqahfa5c5L6/pCxjTPMnblDTwRI/pKes=
 github.com/mtgo-labs/session-converter v0.5.0 h1:NO2uPzSaxed7t1+snRLtRopC5jhmlTDwkj0wJcV+lGY=

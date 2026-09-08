@@ -34,8 +34,8 @@ import (
 	"strings"
 
 	device "github.com/mtgo-labs/device-manager"
-	tgconv "github.com/mtgo-labs/session-converter"
 	"github.com/mtgo-labs/mtgo/telegram"
+	tgconv "github.com/mtgo-labs/session-converter"
 )
 
 // ErrEmptyPhone is returned when the authenticated account has no phone number
@@ -153,9 +153,25 @@ func Relogin(ctx context.Context, opts Options) (*Result, error) {
 
 	// Phase 5: Convert to target format.
 	log.Debug("relogin: converting session", "format", opts.Format)
-	output, err := tgconv.Convert(session, opts.Format)
-	if err != nil {
-		return nil, fmt.Errorf("relogin: convert to %s: %w", opts.Format, err)
+	var output string
+	if opts.Format == tgconv.FormatMTGO {
+		// The mtgo format requires the API hash and phone number; inject
+		// them from the relogin options (idempotent when already present).
+		src, _, err := tgconv.Decode(session)
+		if err != nil {
+			return nil, fmt.Errorf("relogin: decode exported session: %w", err)
+		}
+		src.APIHash = opts.APIHash
+		src.PhoneNumber = phone
+		output, err = tgconv.EncodeSession(src)
+		if err != nil {
+			return nil, fmt.Errorf("relogin: encode mtgo session: %w", err)
+		}
+	} else {
+		output, err = tgconv.Convert(session, opts.Format)
+		if err != nil {
+			return nil, fmt.Errorf("relogin: convert to %s: %w", opts.Format, err)
+		}
 	}
 
 	fmt.Fprintf(out, "relogin: success — new session exported\n")
@@ -260,11 +276,11 @@ func getPhoneFromSession(ctx context.Context, opts Options, src *tgconv.Session)
 	}
 
 	cfg := &telegram.Config{
-		APIID:       int32(opts.APIID),
-		APIHash:     opts.APIHash,
+		APIID:         int32(opts.APIID),
+		APIHash:       opts.APIHash,
 		SessionString: pyroStr,
-		InMemory:    true,
-		NoUpdates:   true,
+		InMemory:      true,
+		NoUpdates:     true,
 	}
 
 	client, err := telegram.NewClient(int32(opts.APIID), opts.APIHash, cfg)
@@ -333,14 +349,14 @@ func freshAuth(ctx context.Context, opts Options, phone string, profile device.P
 	}
 	defer client.Stop()
 
-	// Export the new session.
-	pyroStr, err := client.ExportSessionString()
+	// Export the new session (native MTGO1 format from mtgo).
+	exported, err := client.ExportSessionString()
 	if err != nil {
 		return "", fmt.Errorf("relogin: export session: %w", err)
 	}
-	if pyroStr == "" {
+	if exported == "" {
 		return "", errors.New("relogin: authentication produced empty session")
 	}
 
-	return pyroStr, nil
+	return exported, nil
 }

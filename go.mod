@@ -5,7 +5,7 @@ go 1.26.4
 require (
 	github.com/mtgo-labs/device-manager v0.2.0
 	github.com/mtgo-labs/mtgo v0.15.2
-	github.com/mtgo-labs/session-converter v0.5.0
+	github.com/mtgo-labs/session-converter v0.6.0
 	modernc.org/sqlite v1.53.0
 )
 

@@ -14,8 +14,8 @@ github.com/mtgo-labs/device-manager v0.2.0 h1:v1wxrWfjxR2WlGakK7EufE0NJnlJQgFaiO
 github.com/mtgo-labs/device-manager v0.2.0/go.mod h1:wwKq5sR+4A+xDMM0Eflajb24fzp4RzYPc6z9d0dD0XU=
 github.com/mtgo-labs/mtgo v0.15.2 h1:tIROFeRn+DFUNAaQ/z01FQUiuPGNzSVE0nW7D221Lqo=
 github.com/mtgo-labs/mtgo v0.15.2/go.mod h1:YcGcTRzDQVeFqahfa5c5L6/pCxjTPMnblDTwRI/pKes=
-github.com/mtgo-labs/session-converter v0.5.0 h1:NO2uPzSaxed7t1+snRLtRopC5jhmlTDwkj0wJcV+lGY=
-github.com/mtgo-labs/session-converter v0.5.0/go.mod h1:C7Ox25A0ZAIngpbZxUs9a1UA/FBGI5Jsq95MjFB4plw=
+github.com/mtgo-labs/session-converter v0.6.0 h1:TiL9QyiUqtNa4PfxQQCxTCjtjjEJW4Cmi/YUMiDPSH4=
+github.com/mtgo-labs/session-converter v0.6.0/go.mod h1:C7Ox25A0ZAIngpbZxUs9a1UA/FBGI5Jsq95MjFB4plw=
 github.com/mtgo-labs/storage v0.5.0 h1:x6asAZcLpfhqxEjR6kP4l42246R9XodZGawXsLWLuq8=
 github.com/mtgo-labs/storage v0.5.0/go.mod h1:sBMyZUmM0laJr1Zx4bAyYeQ6jpMCZJ64WPHcL8kNj70=
 github.com/ncruces/go-strftime v1.0.0 h1:HMFp8mLCTPp341M/ZnA4qaf7ZlsbTc+miZjCLOFAw7w=

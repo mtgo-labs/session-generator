@@ -39,7 +39,7 @@ Commands:
   list        List supported formats
 
 Formats:
-  telethon, pyrogram, gramjs, mtcute, mtkruto, gogram, gotgproto
+  telethon, pyrogram, gramjs, mtcute, mtkruto, gogram, gotgproto, mtgo
 
 Flags (convert):
   -f string   Source format (default: auto-detect)
@@ -48,9 +48,16 @@ Flags (convert):
   --user-id int64       User ID (for pyrogram/mtcute output)
   --is-bot              Mark as bot account
   --test-mode           Connect to test servers
+  --api-hash string     API Hash (required for mtgo output)
+  --phone string        Phone number (for mtgo output)
 
 Flags (from-file):
   -t string   Target format (default: telethon)
+  --api-id int          API ID
+  --user-id int64       User ID
+  --is-bot              Mark as bot account
+  --api-hash string     API Hash (required for mtgo output)
+  --phone string        Phone number (for mtgo output)
 
 Flags (generate):
   --api-id int          API ID from my.telegram.org (required)
@@ -127,6 +134,8 @@ func cmdConvert(args []string) {
 	userID := fs.Int64("user-id", 0, "user ID")
 	isBot := fs.Bool("is-bot", false, "is bot")
 	testMode := fs.Bool("test-mode", false, "test mode")
+	apiHash := fs.String("api-hash", "", "API hash (required for mtgo output)")
+	phone := fs.String("phone", "", "phone number (for mtgo output)")
 	fs.Parse(reorderArgs(args))
 
 	rest := fs.Args()
@@ -180,6 +189,16 @@ func cmdConvert(args []string) {
 		fmt.Fprintln(os.Stderr, "warning: api_id is 0 — pyrogram output may not work (use --api-id)")
 	}
 
+	// The mtgo format requires the API hash (and carries the phone number).
+	if target == tgconv.FormatMTGO {
+		if *apiHash == "" {
+			fmt.Fprintln(os.Stderr, "error: --api-hash is required for mtgo output")
+			os.Exit(1)
+		}
+		session.APIHash = *apiHash
+		session.PhoneNumber = *phone
+	}
+
 	// Encode.
 	output, err := tgconv.Encode(session, target)
 	if err != nil {
@@ -225,6 +244,12 @@ func cmdInfo(args []string) {
 	fmt.Printf("Test Mode:    %v\n", session.TestMode)
 	fmt.Printf("User ID:      %d\n", session.UserID)
 	fmt.Printf("Is Bot:       %v\n", session.IsBot)
+	if session.APIHash != "" {
+		fmt.Printf("API Hash:     %s\n", session.APIHash)
+	}
+	if session.PhoneNumber != "" {
+		fmt.Printf("Phone:        %s\n", session.PhoneNumber)
+	}
 }
 
 func cmdFromFile(args []string) {
@@ -233,6 +258,8 @@ func cmdFromFile(args []string) {
 	apiID := fs.Int64("api-id", 0, "API ID")
 	userID := fs.Int64("user-id", 0, "user ID")
 	isBot := fs.Bool("is-bot", false, "is bot")
+	apiHash := fs.String("api-hash", "", "API hash (required for mtgo output)")
+	phone := fs.String("phone", "", "phone number (for mtgo output)")
 	fs.Parse(reorderArgs(args))
 
 	rest := fs.Args()
@@ -264,6 +291,16 @@ func cmdFromFile(args []string) {
 	if !validFormat(target) {
 		fmt.Fprintf(os.Stderr, "error: unsupported format %q\n", *to)
 		os.Exit(1)
+	}
+
+	// The mtgo format requires the API hash (and carries the phone number).
+	if target == tgconv.FormatMTGO {
+		if *apiHash == "" {
+			fmt.Fprintln(os.Stderr, "error: --api-hash is required for mtgo output")
+			os.Exit(1)
+		}
+		session.APIHash = *apiHash
+		session.PhoneNumber = *phone
 	}
 
 	output, err := tgconv.Encode(session, target)

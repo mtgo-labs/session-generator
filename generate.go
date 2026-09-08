@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	tgconv "github.com/mtgo-labs/session-converter"
 	"github.com/mtgo-labs/mtgo/telegram"
+	tgconv "github.com/mtgo-labs/session-converter"
 )
 
 func cmdGenerate(args []string) {
@@ -62,26 +62,40 @@ func cmdGenerate(args []string) {
 	}
 	defer client.Stop()
 
-	// Export session string (Pyrogram format from mtgo).
-	pyroStr, err := client.ExportSessionString()
+	// Export session string (native MTGO1 format from mtgo).
+	exported, err := client.ExportSessionString()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: export session: %v\n", err)
 		os.Exit(1)
 	}
 
-	if pyroStr == "" {
+	if exported == "" {
 		fmt.Fprintln(os.Stderr, "error: authentication failed — empty session")
 		os.Exit(1)
 	}
 
 	// Convert to the requested format.
-	output := pyroStr
-	if target != tgconv.FormatPyrogram {
-		output, err = tgconv.Convert(pyroStr, target)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: convert to %s: %v\n", target, err)
-			os.Exit(1)
+	session, _, err := tgconv.Decode(exported)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: decode exported session: %v\n", err)
+		os.Exit(1)
+	}
+	output := exported
+	switch {
+	case target == tgconv.FormatMTGO:
+		// The mtgo format additionally carries the API hash and phone
+		// number; inject them from the generate flags.
+		session.APIHash = *apiHash
+		if *phone != "" {
+			session.PhoneNumber = *phone
 		}
+		output, err = tgconv.EncodeSession(session)
+	default:
+		output, err = tgconv.Encode(session, target)
+	}
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: encode to %s: %v\n", target, err)
+		os.Exit(1)
 	}
 
 	fmt.Fprintln(os.Stderr, "session generated successfully")

@@ -45,7 +45,11 @@ tgconv list
 
 ## Supported Formats
 
-telethon, pyrogram, gramjs, mtcute, mtkruto, gogram, gotgproto
+telethon, pyrogram, gramjs, mtcute, mtkruto, gogram, gotgproto, mtgo
+
+The native `mtgo` (MTGO1) format additionally carries the API hash and phone
+number; conversions *to* mtgo require `--api-hash` (and `--phone` for user
+sessions).
 
 ## Examples
 
@@ -96,8 +100,8 @@ tgconv generate --api-id 12345 --api-hash abc123 --phone +1234567890 -t pyrogram
 ```
 
 The `generate` command authenticates via MTProto using
-[mtgo](https://github.com/mtgo-labs/mtgo), exports the session in Pyrogram
-format internally, then converts to the requested output format.
+[mtgo](https://github.com/mtgo-labs/mtgo), exports the session in mtgo's
+native MTGO1 format internally, then converts to the requested output format.
 
 ### Re-authenticate a session (relogin)
 
